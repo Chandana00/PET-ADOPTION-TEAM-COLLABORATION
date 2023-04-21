@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import com.psp.app.model.Customer;
 import com.psp.app.model.Product;
 import com.psp.app.service.CustomerService;
-import com.psp.app.service.OwnerService;
+import com.psp.app.service.CustomerServiceImpl;
+import com.psp.app.service.OwnerServiceImpl;
 
 @Controller
 public class CustomerController {
