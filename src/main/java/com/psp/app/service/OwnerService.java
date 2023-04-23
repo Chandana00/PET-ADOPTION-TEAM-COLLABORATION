@@ -2,57 +2,20 @@ package com.psp.app.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.psp.app.model.Pet;
 
-import com.psp.app.dao.ProductRepo;
-import com.psp.app.model.Product;
+public interface OwnerService {
 
-@Service
-public class OwnerService {
+	void savePet(Pet pet);
 	
-	@Autowired 
-	private ProductRepo productRepo;
+	Pet getPet();
 	
-	public void saveProduct(Product product) {
-		
-		Product savedProduct = productRepo.save(product);
-		
-	}
-
-	public Product getProduct() {
-		// TODO Auto-generated method stub
-		return productRepo.findAll().get(0);
-	}
-
-	public List<Product> getAllProducts() {
-		// TODO Auto-generated method stub
-		List<Product> products = productRepo.findAll();
-		return products;
-	}
-
-	public void deleteProduct(Long id) {
-		
-		productRepo.deleteById(id);
+	List<Pet> getAllPets();
 	
-	}
-
-	public Product getProductById(Long id) {
-		// TODO Auto-generated method stub
-		
-		Product product = productRepo.findProductById(id);
-
-		return product;
-	}
-
+	void deletePet(Long id);
 	
-	public void updateProduct(Product product) {
-
-		
-		Product savedProduct = productRepo.save(product);
-
-	}
-
+	Pet getPetById(Long id);
 	
+	void updatePet(Pet pet);
 
 }
