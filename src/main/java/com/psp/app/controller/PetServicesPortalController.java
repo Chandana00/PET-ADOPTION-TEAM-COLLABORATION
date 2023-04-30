@@ -22,7 +22,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.psp.app.model.Customer;
 import com.psp.app.model.Email;
 import com.psp.app.service.CustomerService;
+import com.psp.app.service.CustomerServiceImpl;
 import com.psp.app.service.MessageService;
+import com.psp.app.service.MessageServiceImpl;
 
 @Controller
 public class PetServicesPortalController {
@@ -64,9 +66,32 @@ public class PetServicesPortalController {
 			return "home/error";
 		}
 
-		int output = customerService.saveUser(customer);
+		int outpu = customerService.saveUser(customer);
 		
-		if (output > 0) {
+		int output = 0;
+		System.out.println("save===usernew password");
+		System.out.println("userModel#########"+customer.toString());
+		Customer customerModel=customerService.findUser(customer.getEmail());
+		
+		if(customerModel == null) {
+			model.addAttribute("errormsg", "Email Id doesnot exist in our database");
+			return "home/error";
+		}
+		
+		Email emailmodel = new Email();
+		emailmodel.setMsgBody("Thank you for registering to our website. "+ customerModel.getUsername());
+		emailmodel.setRecipient(customerModel.getEmail());
+		emailmodel.setSubject("Pet Rescue");
+		System.out.println("------------------body"+ emailmodel.getMsgBody()+"======="+ emailmodel.getRecipient());
+		output = messageService.sendSimpleMail(emailmodel);
+		
+		System.out.println("------------------"+ output);
+		if(output !=1) {
+			model.addAttribute("errmsg", "User Email address not found.");
+		}
+		
+		
+		if (outpu > 0) {
 			return "redirect:/login";
 		} else {
 			model.addAttribute("errormsg", "Account creation failed");
@@ -195,6 +220,26 @@ public class PetServicesPortalController {
 		
 	}
 	
+	@PostMapping("/subscribe")
+	public String subscribe(@RequestParam("email") String email, Model model,RedirectAttributes redirectAttrs)
+	{
+	
+		int output =0;
+		Email emailmodel = new Email();
+		emailmodel.setMsgBody("Thank you for subscribing to our Pet Rescue Website");
+		emailmodel.setRecipient(email);
+		emailmodel.setSubject("Subscription Email");
+		System.out.println("------------------body"+ emailmodel.getMsgBody()+"======="+ emailmodel.getRecipient());
+		output = messageService.sendSimpleMail(emailmodel);
+		
+		System.out.println("------------------"+ output);
+		if(output !=1) {
+			model.addAttribute("errmsg", "User Email address not found.");
+		}
+		return "redirect:/customer";
+		
+	}
+	
 	@GetMapping("/changePassword")
 	public String getChangePasswordPage(Model model)
 	{
@@ -234,9 +279,9 @@ public class PetServicesPortalController {
 			model.addAttribute("errormsg", "Session Expired. Please Login Again");
 			return "home/error";
 		}
-		Customer userdata = customerService.findUser(messages.get(0));
+		Customer customer = customerService.findUser(messages.get(0));
 		
-		model.addAttribute("user", userdata);
+		model.addAttribute("customer", customer);
         return "home/profile";
     }
 	
