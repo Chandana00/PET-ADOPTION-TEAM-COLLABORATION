@@ -5,11 +5,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.psp.app.model.Product;
+import com.psp.app.model.Adopt;
+import com.psp.app.model.Assistance;
+import com.psp.app.model.Contact;
+import com.psp.app.model.Pet;
+import com.psp.app.model.Schedule;
+
 
 @Repository
-public interface ProductRepo extends JpaRepository<Product, Long> {
+public interface AdoptRepo extends JpaRepository<Adopt, Long> {
 
-	@Query( value = "select * from products where id = :id", nativeQuery = true)
-	Product findProductById(@Param("id") Long id);
+
 }
