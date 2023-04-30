@@ -1,15 +1,36 @@
 package com.psp.app.service;
 
+import static java.util.Comparator.comparingLong;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toCollection;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.psp.app.dao.AdoptRepo;
+import com.psp.app.dao.AssistanceRepo;
+import com.psp.app.dao.ContactRepo;
 import com.psp.app.dao.CustomerRepo;
-import com.psp.app.dao.ProductRepo;
+import com.psp.app.dao.DonationFoodRepo;
+import com.psp.app.dao.DonationRepo;
+import com.psp.app.dao.PetRepo;
+import com.psp.app.dao.ReportRepo;
+import com.psp.app.dao.ScheduleRepo;
+import com.psp.app.dao.ServiceRepo;
+import com.psp.app.model.Adopt;
+import com.psp.app.model.Assistance;
+import com.psp.app.model.Contact;
 import com.psp.app.model.Customer;
-import com.psp.app.model.Product;
+import com.psp.app.model.DonationFood;
+import com.psp.app.model.DonationMoney;
+import com.psp.app.model.Pet;
+import com.psp.app.model.Report;
+import com.psp.app.model.Schedule;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -18,7 +39,31 @@ public class CustomerServiceImpl implements CustomerService {
 	private CustomerRepo customerRepo;
 	
 	@Autowired
-	private ProductRepo productRepo;
+	private PetRepo petRepo;
+	
+	@Autowired
+	private ScheduleRepo scheduleRepo;
+	
+	@Autowired
+	private ContactRepo contactRepo;
+	
+	@Autowired
+	private ReportRepo reportRepo;
+	
+	@Autowired
+	private ServiceRepo serviceRepo;
+	
+	@Autowired
+	private AssistanceRepo assistanceRepo;
+	
+	@Autowired
+	private DonationRepo donationRepo;
+	
+	@Autowired
+	private DonationFoodRepo donationFoodRepo;
+	
+	@Autowired
+	private AdoptRepo adoptRepo;
 	
 	public int saveUser(Customer user) {
 		customerRepo.save(user);
@@ -114,10 +159,93 @@ public class CustomerServiceImpl implements CustomerService {
 			
 	}
 
-	public List<Product> getAllProducts() {
+	public List<Pet> getAllPets() {
 		// TODO Auto-generated method stub
 		
-		return productRepo.findAll();
+		return petRepo.findAll();
+	}
+
+
+	public List<Pet> searchPets(String searchKey) {
+		
+		List<Pet> pets = petRepo.findAll();
+		List<Pet> searchedPets = pets.stream().filter(pet -> pet.getName().contains(searchKey) ||
+				pet.getColor().equals(searchKey) || pet.getZipCode().contains(searchKey) || pet.getBreed().contains(searchKey)).collect(Collectors.toList());
+		return searchedPets;
+		
+	}
+	
+	public List<Pet> filterPets(String type, String breed) {
+		List<Pet> pets = petRepo.findAll();
+		
+		List<Pet> filteredPets = pets.stream().filter(pet -> pet.getType().equals(type) || pet.getBreed().equals(breed)).collect(Collectors.toList());	
+		
+		
+		
+		return filteredPets.stream().collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparingLong(Pet::getId))),
+                ArrayList::new));
+		
+	}
+
+	@Override
+	public void saveSlot(Schedule schedule) {
+		// TODO Auto-generated method stub
+		scheduleRepo.save(schedule);
+		
+	}
+
+	@Override
+	public void saveTicket(Contact contact) {
+		// TODO Auto-generated method stub
+		contactRepo.save(contact);
+		
+	}
+
+	@Override
+	public void saveReport(Report report) {
+		// TODO Auto-generated method stub
+		reportRepo.save(report);
+		
+	}
+
+	@Override
+	public void saveService(com.psp.app.model.Service service) {
+		// TODO Auto-generated method stub
+		serviceRepo.save(service);
+		
+	}
+
+	@Override
+	public void saveAssistance(Assistance assistance) {
+		// TODO Auto-generated method stub
+		assistanceRepo.save(assistance);
+		
+	}
+
+	@Override
+	public void saveDonation(DonationMoney donation) {
+		// TODO Auto-generated method stub
+		donationRepo.save(donation);
+		
+	}
+
+	@Override
+	public void saveDonationFood(DonationFood donationfood) {
+		// TODO Auto-generated method stub
+		donationFoodRepo.save(donationfood);
+		
+	}
+
+	@Override
+	public void saveSdopt(Adopt adopt) {
+		// TODO Auto-generated method stub
+		adoptRepo.save(adopt);
+	}
+
+	@Override
+	public List<Customer> getAllUsers() {
+		// TODO Auto-generated method stub
+		return customerRepo.findAll();
 	}
 
 }
