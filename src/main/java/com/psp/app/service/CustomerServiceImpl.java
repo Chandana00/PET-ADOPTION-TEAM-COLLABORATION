@@ -22,6 +22,7 @@ import com.psp.app.dao.PetRepo;
 import com.psp.app.dao.ReportRepo;
 import com.psp.app.dao.ScheduleRepo;
 import com.psp.app.dao.ServiceRepo;
+import com.psp.app.dao.VolunteerRepo;
 import com.psp.app.model.Adopt;
 import com.psp.app.model.Assistance;
 import com.psp.app.model.Contact;
@@ -31,6 +32,7 @@ import com.psp.app.model.DonationMoney;
 import com.psp.app.model.Pet;
 import com.psp.app.model.Report;
 import com.psp.app.model.Schedule;
+import com.psp.app.model.Volunteer;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -64,6 +66,9 @@ public class CustomerServiceImpl implements CustomerService {
 	
 	@Autowired
 	private AdoptRepo adoptRepo;
+	
+	@Autowired
+	private VolunteerRepo volunteerRepo;
 	
 	public int saveUser(Customer user) {
 		customerRepo.save(user);
@@ -169,8 +174,7 @@ public class CustomerServiceImpl implements CustomerService {
 	public List<Pet> searchPets(String searchKey) {
 		
 		List<Pet> pets = petRepo.findAll();
-		List<Pet> searchedPets = pets.stream().filter(pet -> pet.getName().contains(searchKey) ||
-				pet.getColor().equals(searchKey) || pet.getZipCode().contains(searchKey) || pet.getBreed().contains(searchKey)).collect(Collectors.toList());
+		List<Pet> searchedPets = pets.stream().filter(pet -> pet.getName().contains(searchKey)  || pet.getZipCode().contains(searchKey) || pet.getBreed().contains(searchKey)).collect(Collectors.toList());
 		return searchedPets;
 		
 	}
@@ -246,6 +250,13 @@ public class CustomerServiceImpl implements CustomerService {
 	public List<Customer> getAllUsers() {
 		// TODO Auto-generated method stub
 		return customerRepo.findAll();
+	}
+
+	@Override
+	public void saveVolunteer(Volunteer volunteer) {
+		// TODO Auto-generated method stub
+		volunteerRepo.save(volunteer);
+		
 	}
 
 }

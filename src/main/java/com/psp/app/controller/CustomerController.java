@@ -22,10 +22,12 @@ import com.psp.app.model.Customer;
 import com.psp.app.model.DonationFood;
 import com.psp.app.model.DonationMoney;
 import com.psp.app.model.Email;
+import com.psp.app.model.Message;
 import com.psp.app.model.Pet;
 import com.psp.app.model.Report;
 import com.psp.app.model.Schedule;
 import com.psp.app.model.Service;
+import com.psp.app.model.Volunteer;
 import com.psp.app.service.CustomerService;
 import com.psp.app.service.CustomerServiceImpl;
 import com.psp.app.service.MessageService;
@@ -339,7 +341,7 @@ public class CustomerController {
 	}
 	
 
-	@PostMapping("/donateNow")
+	@PostMapping("/donateMoney")
 	public String donateNow(@ModelAttribute("donation") DonationMoney donation, Model model, HttpSession session) {
 		
 		@SuppressWarnings("unchecked")
@@ -430,6 +432,58 @@ public class CustomerController {
         customerService.saveSdopt(adopt);
         return "redirect:/customer";
         
+	}
+	
+	@GetMapping("/volunteer")
+	public String volunteer(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		Customer userdata = customerService.findUser(messages.get(0));
+		Volunteer volunteer = new Volunteer();
+		model.addAttribute("volunteer", volunteer);
+		return "customer/volunteer";
+	}
+	
+	@PostMapping("/saveVolunteer")
+	public String saveVolunteer(@ModelAttribute("volunteer") Volunteer volunteer, Model model, HttpSession session) {
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+        model.addAttribute("sessionMessages", messages);
+        Customer customer = customerService.findUser(messages.get(0));
+        
+        volunteer.setUserMail(customer.getEmail());
+        
+        customerService.saveVolunteer(volunteer);
+        return "redirect:/customer";
+        
+	}
+	
+	@GetMapping("/chatbot")
+	public String chatbot(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		Customer userdata = customerService.findUser(messages.get(0));
+		Message message = new Message();
+		model.addAttribute("message", message);
+		return "customer/chatbot";
 	}
 
 

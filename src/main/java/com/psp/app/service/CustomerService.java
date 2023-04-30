@@ -12,6 +12,7 @@ import com.psp.app.model.Pet;
 import com.psp.app.model.Report;
 import com.psp.app.model.Schedule;
 import com.psp.app.model.Service;
+import com.psp.app.model.Volunteer;
 
 public interface CustomerService {
 	int saveUser(Customer user);
@@ -52,5 +53,7 @@ public interface CustomerService {
 	void saveSdopt(Adopt adopt);
 
 	List<Customer> getAllUsers();
+
+	void saveVolunteer(Volunteer volunteer);
 
 }

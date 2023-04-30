@@ -1,6 +1,7 @@
 package com.psp.app.controller;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -12,10 +13,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.psp.app.model.Adopt;
 import com.psp.app.model.Customer;
-import com.psp.app.model.Product;
+import com.psp.app.model.DonationFood;
+import com.psp.app.model.DonationMoney;
+import com.psp.app.model.Pet;
+import com.psp.app.model.Schedule;
+import com.psp.app.model.Volunteer;
+import com.psp.app.service.CustomerService;
 import com.psp.app.service.OwnerService;
+import com.psp.app.service.OwnerServiceImpl;
 
 
 
@@ -24,6 +34,9 @@ public class StoreOwnerController {
 	
 	@Autowired
 	private OwnerService ownerService;
+	
+	@Autowired
+	private CustomerService customerService;
 	
 	@GetMapping("/owner")
 	public String getOwnerWelcomePage(@ModelAttribute("customer") Customer customer, Model model, HttpSession session)
@@ -39,11 +52,11 @@ public class StoreOwnerController {
 		return "owner/welcomestoreowner";
 	}
 	
-	@GetMapping("/addProduct")
-	public String addProduct(Model model, HttpSession session) {
+	@GetMapping("/addPet")
+	public String addPet(Model model, HttpSession session) {
 		
-		Product product = new Product();
-		model.addAttribute("product", product);
+		Pet pet = new Pet();
+		model.addAttribute("pet", pet);
 		@SuppressWarnings("unchecked")
         List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
 
@@ -52,11 +65,11 @@ public class StoreOwnerController {
         }
         model.addAttribute("sessionMessages", messages);
        
-		return "owner/addproduct";
+		return "owner/addpet";
 	}
 	
-	@PostMapping("/saveProduct")
-	public String saveProduct(@ModelAttribute("product") Product product, Model model, HttpSession session)
+	@PostMapping("/savePet")
+	public String savePet(@ModelAttribute("pet") Pet pet, Model model, HttpSession session,  @RequestParam("image") MultipartFile petImage)
 	{
 		System.out.println("product created");
 		@SuppressWarnings("unchecked")
@@ -66,15 +79,24 @@ public class StoreOwnerController {
 			model.addAttribute("errormsg", "Session Expired. Please Login Again");
 			return "home/error";
 		}
+		
+		  
+        try {			
+
+			pet.setPetPhoto(Base64.getEncoder().encodeToString(petImage.getBytes()));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
         
 		
-		ownerService.saveProduct(product);
+		ownerService.savePet(pet);
 		
 		return "redirect:/owner";
 	}
 	
-	@GetMapping("/viewProducts")
-	public String viewProducts(Model model, HttpSession session) {
+	@GetMapping("/viewPets")
+	public String viewPets(Model model, HttpSession session) {
 		
 		
 		@SuppressWarnings("unchecked")
@@ -83,14 +105,14 @@ public class StoreOwnerController {
 			model.addAttribute("errormsg", "Session Expired. Please Login Again");
 			return "home/error";
 		}
-		List<Product> products = ownerService.getAllProducts();
-		model.addAttribute("products", products);
+		List<Pet> pets = ownerService.getAllPets();
+		model.addAttribute("pets", pets);
 		
-		return "owner/displayproducts";
+		return "owner/displaypets";
 	}
 	
-	@GetMapping("/viewSingleProduct/{id}")
-	public String viewSingleProduct(Model model, HttpSession session, @PathVariable(name="id") Long id) {
+	@GetMapping("/viewSinglePet/{id}")
+	public String viewSinglePet(Model model, HttpSession session, @PathVariable(name="id") Long id) {
 		
 		
 		@SuppressWarnings("unchecked")
@@ -99,16 +121,16 @@ public class StoreOwnerController {
 			model.addAttribute("errormsg", "Session Expired. Please Login Again");
 			return "home/error";
 		}
-		Product product = ownerService.getProductById(id);
+		Pet pet = ownerService.getPetById(id);
 		
 		
-		model.addAttribute("product", product);
+		model.addAttribute("pet", pet);
 	
 		
-		return "owner/displaysingleproduct";
+		return "owner/displaysinglepet";
 	}
 	
-	@GetMapping("/editProduct/{id}")
+	@GetMapping("/editPet/{id}")
 	public String editProduct(Model model, HttpSession session, @PathVariable(name="id") Long id) {
 		
 		
@@ -118,19 +140,19 @@ public class StoreOwnerController {
 			model.addAttribute("errormsg", "Session Expired. Please Login Again");
 			return "home/error";
 		}
-		Product product = ownerService.getProductById(id);
+		Pet pet = ownerService.getPetById(id);
 		
 		
-		model.addAttribute("product", product);
+		model.addAttribute("pet", pet);
 		
 
-		return "owner/updateproduct";
+		return "owner/updatepet";
 	}
 	
-	@PostMapping("/updateProduct")
-	public String updateProduct(@ModelAttribute("product") Product product, Model model, HttpSession session)
+	@PostMapping("/updatePet")
+	public String updatePet(@ModelAttribute("pet") Pet pet, Model model, HttpSession session, @RequestParam("image") MultipartFile petImage)
 	{
-		System.out.println("product updated");
+		System.out.println("pet updated");
 		@SuppressWarnings("unchecked")
         List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
 		if(messages == null) {
@@ -138,19 +160,158 @@ public class StoreOwnerController {
 			return "home/error";
 		}
 		
-		
-		ownerService.updateProduct(product);
+		   try {			
+
+				pet.setPetPhoto(Base64.getEncoder().encodeToString(petImage.getBytes()));
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		ownerService.updatePet(pet);
 		
 		
 		return "redirect:/owner";
 	}
 	
-	@PostMapping("/deleteProduct/{id}")
-	public String deleteProduct(@PathVariable(name="id") Long id)
+	@PostMapping("/deletePet/{id}")
+	public String deletePet(@PathVariable(name="id") Long id)
 	{
-		ownerService.deleteProduct(id);
+		ownerService.deletePet(id);
 		
 		return "redirect:/owner";
 	}
+	
+	@GetMapping("/adoptions")
+	public String adoptions(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		List<Adopt> adoptions = ownerService.getAllAdoptions();
+		model.addAttribute("adoptions", adoptions);
+		
+		return "owner/adoptions";
+	}
+	
+	
+	@GetMapping("/calendar")
+	public String calendar(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		List<Schedule> appointmnets = ownerService.getAllAppointments();
+		model.addAttribute("appointmnets", appointmnets);
+		
+		List<Schedule> vaccines = ownerService.getAllVacciness();
+		model.addAttribute("vaccines", vaccines);
+		
+		return "owner/calendar";
+	}
+	
+	@GetMapping("/moneydonations")
+	public String moneydonations(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		List<DonationMoney> donations = ownerService.getAllMoneyDontaions();
+		model.addAttribute("donations", donations);
+		
+		
+		return "owner/moneydonations";
+	}
 
+
+	@GetMapping("/fooddonations")
+	public String fooddonations(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		List<DonationFood> donations = ownerService.getAllFoodDontaions();
+		model.addAttribute("donations", donations);
+		
+		
+		return "owner/fooddonations";
+	}
+	
+	@GetMapping("/users")
+	public String users(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		List<Customer> users = customerService.getAllUsers();
+		model.addAttribute("users", users);
+		
+		
+		return "owner/users";
+	}
+	
+	@GetMapping("/volunteers")
+	public String volunteers(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}	
+		List<Volunteer> volunteers = ownerService.getAllVolunteers();
+		model.addAttribute("volunteers", volunteers);
+		
+		
+		return "owner/volunteers";
+	}
+	
+	@GetMapping("/generate")
+	public String generate(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}	
+		List<Volunteer> volunteers = ownerService.getAllVolunteers();
+		List<Customer> users = customerService.getAllUsers();
+		List<DonationFood> fdonations = ownerService.getAllFoodDontaions();
+		List<DonationMoney> mdonations = ownerService.getAllMoneyDontaions();
+		List<Schedule> vaccines = ownerService.getAllVacciness();
+		List<Schedule> appointmnets = ownerService.getAllAppointments();
+		List<Adopt> adoptions = ownerService.getAllAdoptions();
+		model.addAttribute("volunteers", volunteers.size());
+		model.addAttribute("users", users.size());
+		model.addAttribute("fdonations", fdonations.size());
+		model.addAttribute("mdonations", mdonations.size());
+		model.addAttribute("vaccines", vaccines.size());
+		model.addAttribute("appointmnets", appointmnets.size());
+		model.addAttribute("adoptions", adoptions.size());
+		
+		
+		return "owner/generate";
+	}
 }
