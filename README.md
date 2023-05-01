@@ -5,7 +5,7 @@ To get started  you'll need  have prerequisites installed, you can clone the rep
 
 
 
-Getting started
+## Getting started
 | Entity | Model Path |
 | --- | --- |
 | Category | src/main/java/com/psp/app/model/Category.java |
@@ -18,11 +18,11 @@ Getting started
 | Service | src/main/java/com/psp/app/model/Service.java |
 | Volunteer| src/main/java/com/psp/app/model/Volunteer.java |
 
-INSTALLATIONS
-| MYSQLWORK BENCH | | https://www.mysql.com/products/workbench/ |
-| ECLIPSE | | https://www.eclipse.org |
+## INSTALLATIONS
+| MYSQLWORK BENCH | https://www.mysql.com/products/workbench/ |
+| ECLIPSE | https://www.eclipse.org |
 
-AUTHORS
+## AUTHORS
 | CHANDANA ANANTHARAMA |
 | GOWTHAM |
 | SUSHANTH |
