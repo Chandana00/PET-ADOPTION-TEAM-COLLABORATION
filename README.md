@@ -6,7 +6,7 @@ To get started  you'll need  have prerequisites installed, you can clone the rep
 
 
 Getting started
-| Entity | Path |
+| Entity | Model Path |
 | --- | --- |
 | Category | src/main/java/com/psp/app/model/Category.java |
 | Customer | src/main/java/com/psp/app/model/Customer.java |
