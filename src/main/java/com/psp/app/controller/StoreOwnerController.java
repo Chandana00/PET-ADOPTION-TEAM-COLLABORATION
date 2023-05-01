@@ -208,8 +208,8 @@ public class StoreOwnerController {
 			model.addAttribute("errormsg", "Session Expired. Please Login Again");
 			return "home/error";
 		}
-		List<Schedule> appointmnets = ownerService.getAllAppointments();
-		model.addAttribute("appointmnets", appointmnets);
+		List<Schedule> appointments = ownerService.getAllAppointments();
+		model.addAttribute("appointments", appointments);
 		
 		List<Schedule> vaccines = ownerService.getAllVacciness();
 		model.addAttribute("vaccines", vaccines);
