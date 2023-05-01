@@ -18,6 +18,16 @@ Getting started
 | Service | src/main/java/com/psp/app/model/Service.java |
 | Volunteer| src/main/java/com/psp/app/model/Volunteer.java |
 
+INSTALLATIONS
+| MYSQLWORK BENCH | | https://www.mysql.com/products/workbench/ |
+| ECLIPSE | | https://www.eclipse.org |
+
+AUTHORS
+| CHANDANA ANANTHARAMA |
+| GOWTHAM |
+| SUSHANTH |
+| YASWANTH |
+
 
 
 
