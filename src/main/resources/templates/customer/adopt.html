@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Pet Services Portal </title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="../img/favicon.png" rel="icon">
+  <link href="../img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="../vendor/aos/aos.css" rel="stylesheet">
+  <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="../vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="../vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="../vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <link href="../css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+
+      <h1 class="logo me-auto">Pet Services Portal</h1>
+
+     <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto active" href="/customer">Home</a></li>
+        <li class="dropdown"><a class="nav-link scrollto active" href="/schedule"><span>Schedule</span> </a>
+          <li class="dropdown"><a href="#"><span>Features</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="/services">Pet Services</a></li>
+              <li><a href="/assistance">Pet Assitant</a></li>
+              <li><a href="/refer">Refer a friend</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Donations</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="/donatemoney">Donate Money</a></li>
+              <li><a href="/donatefood">Donate Food</a></li>
+              
+            </ul>
+          </li>
+          <li><a class="nav-link scrollto active" href="/report">Report</a></li>
+          
+                <li><a class="nav-link scrollto active" href="/volunteer">Volunteer</a></li>
+                 <li><a class="nav-link scrollto active" href="/chatbot">Chatbot</a></li>
+           <li><a class="nav-link scrollto active" href="/profile">Profile</a></li>
+             <li><a class="getstarted scrollto" href="/login">Logout</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav>
+
+
+
+    </div>
+  </header>
+  
+
+
+  
+<section id="contact" class="contact" >
+      <div class="container" data-aos="fade-up" style="margin-top:80px;">
+
+        <div class="section-title">
+          <h2>Adoption</h2>
+        </div>
+
+          <div class="col-lg-7 mt-5 mt-lg-0 d-flex justify-content-center" style="margin-left:20%;">
+          
+  			<form th:action=@{/adoptNow} th:object="${adopt}" method="post" class="php-email-form">
+   
+			     
+			     <div class="form-group">
+			     <input type="text" class="form-control" placeholder="Email"  name="customerEmail"/>
+			    </div>
+			    
+			    <div class="form-group">
+			     <input type="text" class="form-control" placeholder="Name"  name="customerName"/>
+			    </div>
+			    <div class="form-group">
+			     <input type="number" class="form-control" placeholder="Mobile Number"  name="customerMobile"/>
+			    </div>
+			    
+			     <div class="form-group">
+			     <input type="name" class="form-control" placeholder="Address"  name="address"/>
+			    </div>
+			    
+			    <button type="submit" class="btn btn-primary" onclick="alertNow()">Submit</button>
+  			</form>
+          </div>
+          
+      </div>
+    </section><!-- End Contact Section -->
+    
+
+		<script>
+		function alertNow(){
+			alert("Adoption Details Saved Successfully");
+		}
+		</script>
+		
+		 
+    <footer id="footer">
+
+    <div class="footer-newsletter">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-6">
+            <h4>Please subscribe</h4>
+            <p>Enter your email address below</p>
+            <form action="/subscribe" method="post">
+              <input type="email" name="email"><input type="submit" value="Subscribe">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6 footer-contact">
+            <h3>PET RESCUE</h3>
+           
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              <li><a href="/contact">Contact Us</a></li>
+              
+            </ul>
+          </div>
+
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            <h4>Our Social Networks</h4>
+            <p>Share this site</p>
+            <div class="social-links mt-3">
+              <button onclick="twit()"><i class="bx bxl-twitter"></i></button>
+              <button onclick="face()"><i class="bx bxl-facebook"></i></button>
+              <button onclick="insta()"><i class="bx bxl-instagram"></i></button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom clearfix">
+      
+    </div>
+  </footer><!-- End Footer -->
+  
+  <script>
+  function insta(){
+	  location.replace("https://www.instagram.com")
+  }
+  function face(){
+	  location.replace("https://www.facebook.com")
+  }
+  
+  function twit(){
+	  location.replace("https://www.twitter.com")
+  }
+  </script>
+		
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="../vendor/aos/aos.js"></script>
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="../vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="../vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="../vendor/php-email-form/validate.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  <!-- Template Main JS File -->
+  <script src="../js/main.js"></script>
+
+</body>
+
+</html>
